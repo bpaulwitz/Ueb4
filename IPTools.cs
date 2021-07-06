@@ -64,7 +64,45 @@ public static class IPTools
         //IPv6
         else if(addr.Contains(':'))
         {
+            byte[] result = new byte[16];
 
+            int resultCounter = 0;
+
+            for(int i = 0; i < addr.Length; i+=2)
+            {
+
+                /*
+                addr[i] -> i
+
+                f -> 0
+                f -> 0 + 1
+                e -> 2
+                e -> 2 + 1
+                : -> 4 -> 3
+                => 3 + 2 = 5
+                d -> 5 + 1
+
+                */
+                if(addr[i] == ':')
+                {
+                    i--;
+                    continue;
+                }
+                
+                string currentByte = $"{addr[i]}{addr[i+1]}";
+
+                try
+                {
+                    result[resultCounter] = Convert.ToByte(currentByte, 16);
+                    resultCounter++;
+                }
+                catch (System.Exception)
+                {
+                    Console.WriteLine("Failed to parse IP Address");
+                    return null;
+                }
+            }
+            return result;
         }
         //Weder IPv4 noch IPv6 -> Null zurück geben
         return null;

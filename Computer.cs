@@ -4,6 +4,18 @@ using System.IO;
 
 public class Computer
 {
+    private byte[] ipAddressArray;
+    public string ipAddress
+    {
+        get
+        {
+            return IPTools.IPToString(ipAddressArray);
+        }
+        set
+        {
+            ipAddressArray = IPTools.IPToByte(value);
+        }
+    }
     public string UserName
     {
         get;
@@ -22,6 +34,7 @@ public class Computer
         UserName = "Administrator";
         rng = new Random();
         failedSaving = false;
+        ipAddressArray = IPTools.Localhost;
     }
 
     public void switchUser(string user)
@@ -62,4 +75,17 @@ public class Computer
         //Fehlerzustand zurücksetzen
         failedSaving = false;
     }
+
+    public void burn(string beschriftung, string inhalt, out Blu_Ray output)
+    {
+        output = new Blu_Ray(beschriftung, inhalt);
+    }
+
+    public void print()
+    {
+        Console.WriteLine(
+            $"User: {UserName}\nIP: {ipAddress}\nSchreibabsturz: {failedSaving}"
+        );
+    }
+    
 }
